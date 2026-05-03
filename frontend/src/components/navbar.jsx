@@ -1,13 +1,9 @@
-"use client"
-
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
-import { Menu, X } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
+import React, { useState, useRef, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 const navigation = [
  { name: "Home", href: "/" },
@@ -18,18 +14,15 @@ const navigation = [
  { name: "Contact", href: "/contact" },
 ]
 
-interface NavbarProps {
- variant?: "default" | "transparent"
-}
+export function Navbar({ variant = 'default' }) {
+ const location = useLocation()
+ const pathname = location.pathname
+ const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+ const [scrolled, setScrolled] = useState(false)
+ const [hidden, setHidden] = useState(false)
+ const lastScrollY = useRef(0)
 
-export function Navbar({ variant = "default" }: NavbarProps) {
- const pathname = usePathname()
- const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
- const [scrolled, setScrolled] = React.useState(false)
- const [hidden, setHidden] = React.useState(false)
- const lastScrollY = React.useRef(0)
-
- React.useEffect(() => {
+ useEffect(() => {
  const handleScroll = () => {
  const currentScrollY = window.scrollY
  
@@ -46,8 +39,8 @@ export function Navbar({ variant = "default" }: NavbarProps) {
  lastScrollY.current = currentScrollY
  }
  
- window.addEventListener("scroll", handleScroll, { passive: true })
- return () => window.removeEventListener("scroll", handleScroll)
+   window.addEventListener('scroll', handleScroll, { passive: true })
+   return () => window.removeEventListener('scroll', handleScroll)
  }, [])
 
  return (
@@ -103,8 +96,8 @@ export function Navbar({ variant = "default" }: NavbarProps) {
  
  
  <Link
- href="/contact"
- className="group relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-background bg-foreground rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg"
+ to="/contact"
+ className="group relative inline-flex items-center gap-2 px-6 py-2.5 text-sm font-medium text-background bg-foreground rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg no-underline"
  >
  Get in Touch
  
@@ -167,21 +160,21 @@ export function Navbar({ variant = "default" }: NavbarProps) {
  <div
  key={item.name}
  className={cn(
- "overflow-hidden transition-all duration-500",
- mobileMenuOpen ? "opacity-100" : "opacity-0"
+ 'overflow-hidden transition-all duration-500',
+ mobileMenuOpen ? 'opacity-100' : 'opacity-0'
  )}
  style={{
- transitionDelay: mobileMenuOpen ? `${index * 0.05 + 0.1}s` : "0s"
+ transitionDelay: mobileMenuOpen ? `${index * 0.05 + 0.1}s` : '0s'
  }}
  >
  <Link
- href={item.href}
+ to={item.href}
  onClick={() => setMobileMenuOpen(false)}
  className={cn(
- "block py-3 text-4xl font-medium transition-all duration-300",
+ 'block py-3 text-4xl font-medium transition-all duration-300 no-underline',
  pathname === item.href
- ? "text-foreground"
- : "text-muted-foreground hover:text-foreground hover:translate-x-2"
+ ? 'text-foreground'
+ : 'text-muted-foreground hover:text-foreground hover:translate-x-2'
  )}
  style={{ fontFamily: 'var(--font-display)' }}
  >
@@ -194,15 +187,15 @@ export function Navbar({ variant = "default" }: NavbarProps) {
  {/* Mobile CTA */}
  <div
  className={cn(
- "mt-12 transition-all duration-500",
- mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+ 'mt-12 transition-all duration-500',
+ mobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
  )}
- style={{ transitionDelay: mobileMenuOpen ? "0.4s" : "0s" }}
+ style={{ transitionDelay: mobileMenuOpen ? '0.4s' : '0s' }}
  >
  <Link
- href="/contact"
+ to="/contact"
  onClick={() => setMobileMenuOpen(false)}
- className="inline-flex items-center gap-2 px-8 py-4 text-lg font-medium text-background bg-foreground rounded-full"
+ className="inline-flex items-center gap-2 px-8 py-4 text-lg font-medium text-background bg-foreground rounded-full no-underline"
  >
  Start a Project
  

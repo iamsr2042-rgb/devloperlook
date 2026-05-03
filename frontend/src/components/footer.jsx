@@ -1,22 +1,20 @@
-"use client"
-
-import Link from "next/link"
-import { Github, Linkedin, Twitter, Instagram, ArrowUpRight, Mail } from "lucide-react"
-import { Reveal } from "@/components/animated-text"
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { Github, Linkedin, Twitter, Instagram, ArrowUpRight, Mail } from 'lucide-react'
 
 const navigation = {
  main: [
- { name: "About", href: "/about" },
- { name: "Services", href: "/services" },
- { name: "Portfolio", href: "/portfolio" },
- { name: "Blog", href: "/blog" },
- { name: "Contact", href: "/contact" },
+ { name: 'About', href: '/about' },
+ { name: 'Services', href: '/services' },
+ { name: 'Portfolio', href: '/portfolio' },
+ { name: 'Blog', href: '/blog' },
+ { name: 'Contact', href: '/contact' },
  ],
  social: [
- { name: "Twitter", href: "#", icon: Twitter },
- { name: "GitHub", href: "#", icon: Github },
- { name: "LinkedIn", href: "#", icon: Linkedin },
- { name: "Instagram", href: "#", icon: Instagram },
+ { name: 'Twitter', href: '#', icon: Twitter },
+ { name: 'GitHub', href: '#', icon: Github },
+ { name: 'LinkedIn', href: '#', icon: Linkedin },
+ { name: 'Instagram', href: '#', icon: Instagram },
  ],
 }
 
@@ -45,11 +43,13 @@ export function Footer() {
  
  
  
- <Link
+ <a
  href="mailto:hello@folio.design"
  className="group inline-flex items-center gap-3 mt-8 text-lg font-medium text-foreground hover:text-accent transition-colors"
  >
- 
+ <Mail className="w-5 h-5" />
+ hello@folio.design
+ </a>
  
  
  hello@folio.design
@@ -68,13 +68,34 @@ export function Footer() {
  {navigation.main.map((item) => (
  <Link
  key={item.name}
- href={item.href}
- className="group flex items-center gap-2 text-foreground hover:text-accent transition-colors"
+ to={item.href}
+ className="group flex items-center gap-2 text-foreground hover:text-accent transition-colors no-underline"
  >
  {item.name}
- 
- 
+ </Link>
  ))}
+ 
+
+ {/* Social & Info */}
+ <div>
+ <h4 className="text-sm font-medium text-muted-foreground mb-4">Follow</h4>
+ <div className="flex gap-4">
+ {navigation.social.map((item) => {
+ const IconComponent = item.icon
+ return (
+ <a
+ key={item.name}
+ href={item.href}
+ target="_blank"
+ rel="noopener noreferrer"
+ className="group flex items-center gap-3 text-foreground hover:text-accent transition-colors"
+ >
+ <IconComponent className="w-5 h-5" />
+ </a>
+ )
+ })}
+ </div>
+ </div>
  
  
 
