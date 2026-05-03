@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin } from 'lucide-react'
 import { Section } from '@/components/section'
+import api from '@/config/api'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ export default function ContactPage() {
     message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -19,20 +21,15 @@ export default function ContactPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitSuccess(false)
     
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-      
-      if (response.ok) {
-        setFormData({ name: '', email: '', subject: '', message: '' })
-        alert('Message sent successfully!')
-      }
+      await api.post('/contact', formData)
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      setSubmitSuccess(true)
+      setTimeout(() => setSubmitSuccess(false), 5000)
     } catch (error) {
-      console.error('Error sending message:', error)
+      console.log('[v0] Error sending message:', error.message)
       alert('Failed to send message. Please try again.')
     } finally {
       setIsSubmitting(false)
@@ -56,6 +53,11 @@ export default function ContactPage() {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {submitSuccess && (
+              <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-lg text-green-600 dark:text-green-400">
+                Message sent successfully! Thank you for reaching out.
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium mb-2">Name</label>
               <input

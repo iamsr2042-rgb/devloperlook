@@ -1,44 +1,82 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Calendar, User } from 'lucide-react'
 import { Section } from '@/components/section'
+import api from '@/config/api'
 
-const posts = [
+const defaultPosts = [
   {
-    title: 'The Future of Web Design',
-    excerpt: 'Exploring emerging trends and technologies shaping modern web design.',
-    author: 'Jessica Williams',
-    date: 'March 15, 2024',
-    category: 'Design',
-    slug: 'future-of-web-design',
+    _id: '1',
+    title: 'Getting Started with React Hooks',
+    excerpt: 'Learn how to use React Hooks to manage state and side effects in functional components.',
+    author: 'John Developer',
+    createdAt: new Date('2024-03-10'),
+    category: 'React',
+    slug: 'react-hooks-guide',
+    readTime: 5
   },
   {
-    title: 'Building Scalable Applications',
-    excerpt: 'Best practices for developing applications that grow with your business.',
-    author: 'David Kim',
-    date: 'March 10, 2024',
-    category: 'Development',
-    slug: 'building-scalable-apps',
+    _id: '2',
+    title: 'MongoDB Best Practices',
+    excerpt: 'Essential tips and tricks for optimizing your MongoDB databases.',
+    author: 'Jane Backend',
+    createdAt: new Date('2024-03-05'),
+    category: 'Database',
+    slug: 'mongodb-best-practices',
+    readTime: 8
   },
   {
-    title: 'User Experience in 2024',
-    excerpt: 'How to create interfaces that users genuinely love and want to use.',
-    author: 'Sarah Chen',
-    date: 'March 5, 2024',
-    category: 'UX',
-    slug: 'ux-2024',
+    _id: '3',
+    title: 'CSS Grid vs Flexbox',
+    excerpt: 'Understand the differences and when to use CSS Grid or Flexbox.',
+    author: 'Alex Designer',
+    createdAt: new Date('2024-02-28'),
+    category: 'CSS',
+    slug: 'css-grid-vs-flexbox',
+    readTime: 6
   },
   {
-    title: 'Mobile-First Design Strategy',
-    excerpt: 'Why mobile-first should be your default approach in modern design.',
-    author: 'Marcus Johnson',
-    date: 'February 28, 2024',
-    category: 'Strategy',
-    slug: 'mobile-first-strategy',
+    _id: '4',
+    title: 'Web Performance Optimization',
+    excerpt: 'Tips to improve your website performance and user experience.',
+    author: 'Chris Performance',
+    createdAt: new Date('2024-02-20'),
+    category: 'Performance',
+    slug: 'web-performance',
+    readTime: 10
   },
 ]
 
 export default function BlogPage() {
+  const [posts, setPosts] = useState(defaultPosts)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await api.get('/blog')
+        setPosts(response.data)
+      } catch (error) {
+        console.log('[v0] Using default posts due to:', error.message)
+        setPosts(defaultPosts)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="inline-block w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin" />
+          <p className="mt-4 text-muted-foreground">Loading blog posts...</p>
+        </div>
+      </div>
+    )
+  }
   return (
     <div>
       <Section className="py-20 md:py-32">
