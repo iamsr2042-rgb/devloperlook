@@ -1,14 +1,14 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from './components/theme-provider';
-import HomePage from './app/page';
-import AboutPage from './app/about/page';
-import BlogPage from './app/blog/page';
-import ContactPage from './app/contact/page';
-import PortfolioPage from './app/portfolio/page';
-import ServicesPage from './app/services/page';
-import NotFoundPage from './app/not-found';
-import './globals.css';
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { ThemeProvider } from './components/theme-provider'
+import HomePage from './pages/Home'
+import AboutPage from './pages/About'
+import BlogPage from './pages/Blog'
+import ContactPage from './pages/Contact'
+import PortfolioPage from './pages/Portfolio'
+import ServicesPage from './pages/Services'
+import NotFoundPage from './pages/NotFound'
+import './globals.css'
 
 function App() {
   return (
